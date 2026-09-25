@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Pulse tab icon: the app's accent tile with its own pulseLine icon (ICONS.pulseLine). -->
+  <rect width="24" height="24" rx="6" fill="#c8f04b"/>
+  <path d="M2.5 12.5h3.6l2.1-6.4 3.2 12.2 2.6-8.4 1.8 2.6h5.7" transform="translate(2.4 2.4) scale(.8)" fill="none" stroke="#0b0c0b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
