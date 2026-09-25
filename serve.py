@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local server for the Pulse client demo.
+"""Local server for the Pulse client demo (Consulting DISTRIBUTION.ie).
 
 Serves the mockup at a clean address (http://pulse.localhost:8080) instead of the raw file
 name, and only the files the page needs: no folder listing, nothing else in this directory
@@ -29,16 +29,23 @@ FILES = {
     "/AgentFace.dc.html": "AgentFace.dc.html",  # fetched by the page for the agent avatars
     "/favicon.svg": "favicon.svg",
 }
-for folder, _, names in os.walk(os.path.join(HERE, "vendor")):  # offline React + fonts
-    for name in names:
-        if os.path.splitext(name)[1] in TYPES:
-            rel = os.path.relpath(os.path.join(folder, name), HERE)
-            FILES["/" + rel.replace(os.sep, "/")] = rel
+for top in ("vendor", "dist"):  # offline React + fonts, and the distribution layer
+    for folder, _, names in os.walk(os.path.join(HERE, top)):
+        for name in names:
+            if os.path.splitext(name)[1] in TYPES:
+                rel = os.path.relpath(os.path.join(folder, name), HERE)
+                FILES["/" + rel.replace(os.sep, "/")] = rel
 
 
 class DemoHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        name = FILES.get(self.path.split("?", 1)[0])
+        path = self.path.split("?", 1)[0]
+        name = FILES.get(path)
+        if name is None and path.startswith("/dist/") and path.count("/") == 2:
+            # Files added to dist/ while the server runs; still one folder, known types only.
+            rel = os.path.join("dist", os.path.basename(path))
+            if os.path.splitext(rel)[1] in TYPES and os.path.isfile(os.path.join(HERE, rel)):
+                name = rel
         if name is None:
             self.send_error(404)
             return
