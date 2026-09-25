@@ -535,7 +535,7 @@
 
   /* ---------- modules: the sidebar and each module's pages ---------- */
   PD.MODULES = [
-    { id: "Home", icon: "M12 3.2 3.6 9.1v10a1.5 1.5 0 0 0 1.5 1.5h13.8a1.5 1.5 0 0 0 1.5-1.5v-10L12 3.2Z M8.9 13.1h2l1-2.6 1.5 5 1.1-2.4h1.6", subs: ["Command Centre", "Executive Dashboard"] },
+    { id: "Home", icon: "M12 3.2 3.6 9.1v10a1.5 1.5 0 0 0 1.5 1.5h13.8a1.5 1.5 0 0 0 1.5-1.5v-10L12 3.2Z M8.9 13.1h2l1-2.6 1.5 5 1.1-2.4h1.6", subs: ["Home", "Command Centre", "Executive Dashboard"] },
     { id: "Orders", icon: "M7.5 4.5h9A1.5 1.5 0 0 1 18 6v14.5l-2.2-1.4-2 1.4-1.8-1.4-1.8 1.4-2-1.4L6 20.5V6a1.5 1.5 0 0 1 1.5-1.5Z M9 9h6 M9 12.5h6 M9 16h3.5", subs: ["Overview", "Live Orders", "At Risk", "Backorders", "Allocation", "Order Detail"] },
     { id: "Inventory", icon: "M12 3 20 7.4v9.2L12 21l-8-4.4V7.4L12 3Z M4 7.4l8 4.4 8-4.4 M12 11.8V21 M8 5.2l8 4.4", subs: ["Overview", "Stock", "Availability", "Replenishment", "Slow & Dead Stock", "Forecast", "Transfers"] },
     { id: "Purchasing", icon: "M3.5 4.5h2.4l2.2 10.4h9.6l2-7.4H7 M10 19.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z M17 19.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z", subs: ["Overview", "Recommendations", "Purchase Orders", "Incoming", "Suppliers", "Supplier Performance"] },

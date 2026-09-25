@@ -2794,7 +2794,7 @@ class Component extends DCLogic {
   componentDidMount(){
     this.seedActivity();
     this._actTimer = setInterval(() => { if (this.state.page === "Activity") this.tickActivity(); }, 700);
-    this._clockTimer = setInterval(() => { if (this.state.page === "Agents" && this.state.subs.Agents === "Chat") this.forceUpdate(); }, 1000);
+    this._clockTimer = setInterval(() => { if ((this.state.page === "Agents" && this.state.subs.Agents === "Chat") || (this.state.page === "Home" && (this.state.subs.Home || "Home") === "Home")) this.forceUpdate(); }, 1000);
     this._flapBoot = setInterval(() => this.forceUpdate(), 70);
     setTimeout(() => clearInterval(this._flapBoot), 1500);
     this._resize = () => this.setState({w: window.innerWidth});
@@ -2817,8 +2817,8 @@ class Component extends DCLogic {
       {role:"user", text:q},
       {role:"helios", full:a.text, words, tool:a.tool, effect:a.effect, cols:a.cols, rows:a.rows, actions:a.actions, confirm:a.confirm, confirmSummary:a.confirmSummary}
     ]);
-    this.setState(prev => ({thread, draft:"", query:"", paletteOpen:false, page:"Agents", rec:null, open:null, miniOpen:false,
-      subs:Object.assign({}, prev.subs, {Agents:"Chat"}), hist: prev.hist.concat([this.snapshot(prev)]).slice(-40)}));
+    this.setState(prev => ({thread, draft:"", query:"", paletteOpen:false, page:"Home", rec:null, open:null, miniOpen:false,
+      subs:Object.assign({}, prev.subs, {Home:"Home"}), hist: prev.hist.concat([this.snapshot(prev)]).slice(-40)}));
   }
 
   /* Navigation keeps a history, so a record opened from anywhere has a way back. */
@@ -3922,7 +3922,7 @@ class Component extends DCLogic {
     const contextHint = HINTS[page] || "";
     const searchHint = "Search orders, SKUs, customers, POs";
     /* The distribution pages render from dist/; the shell keeps Work, Activity, Settings, the agents and chat. */
-    const isDist = ["Work","Activity","Settings"].indexOf(page) < 0 && !(page === "Agents" && curSub !== "Agent Activity");
+    const isDist = ["Work","Activity","Settings"].indexOf(page) < 0 && !(page === "Agents" && curSub !== "Agent Activity") && !(page === "Home" && curSub === "Home");
     const distView = isDist ? PD.render({module:page, sub:curSub, rec:st.rec, st:st.dist, canBack: st.hist.length > 0,
       go:(m, sb) => this.goSub(m, sb), open:(t, i) => this.openRec(t, i), back:() => this.back(), ask:(qq) => this.ask(qq),
       set:(p) => this.distSet(p), act:(k, t, x, tone) => this.distAct(k, t, x, tone), done:(k) => !!(st.dist.done || {})[k],
@@ -4229,7 +4229,7 @@ class Component extends DCLogic {
       sendAgent: () => { if (st.agentDraft.trim()) this.sendToAgent(st.agentDraft.trim()); },
 
       /* mini chat */
-      showFab: page !== "Agents",
+      showFab: page !== "Agents" && !(page === "Home" && curSub === "Home"),
       fabTitle: st.miniOpen ? "Close Helios" : "Ask Helios",
       fabChatStyle: "position:absolute;inset:0;transition:transform .34s var(--ease),opacity .24s var(--ease);"
         + (st.miniOpen ? "transform:rotate(-90deg) scale(.7);opacity:0" : "transform:none;opacity:1"),
@@ -4243,7 +4243,7 @@ class Component extends DCLogic {
       miniOpen: st.miniOpen,
       toggleMini: () => this.setState(prev => ({miniOpen: !prev.miniOpen})),
       miniContext: "SEES " + page.toUpperCase(),
-      goHomeChat: () => this.goSub("Agents", "Chat"),
+      goHomeChat: () => this.goSub("Home", "Home"),
       miniIsChat: (st.miniTab || "chat") === "chat", miniIsWork: (st.miniTab || "chat") === "work",
       miniTabTrack: "position:relative;display:flex;align-items:center;width:164px;padding:2px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;flex:none",
       miniTabThumb: (() => {
@@ -4470,7 +4470,7 @@ class Component extends DCLogic {
         label: st.hoverLabel, hint: st.hoverHint,
         style: labelStyle(st.hovered !== null, st.hoverTop)
       },
-      isChat: page === "Agents" && curSub === "Chat",
+      isChat: (page === "Agents" && curSub === "Chat") || (page === "Home" && curSub === "Home"),
       isWork: page === "Work",
       isSettings: page === "Settings",
       admin: adminModel,
